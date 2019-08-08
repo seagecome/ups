@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<generatorConfiguration>
+	<context id="Mysql" targetRuntime="tk.mybatis.mapper.generator.TkMyBatis3Impl" defaultModelType="hierarchical">
+		<property name="beginningDelimiter" value="`"/>
+		<property name="endingDelimiter" value="`"/>
+		<property name="javaFileEncoding" value="UTF-8"/>
+		<property name="javaFormatter" value="org.mybatis.generator.api.dom.DefaultJavaFormatter"/>
+		<property name="xmlFormatter" value="org.mybatis.generator.api.dom.DefaultXmlFormatter"/>
+		
+		<plugin type="org.mybatis.generator.plugins.ToStringPlugin"></plugin>
+		<plugin type="tk.mybatis.mapper.generator.MapperPlugin">
+			<property name="mappers" value="com.talkortell.bbs.dal.dao.ups.base.SelfMySQLSlaveMapper"/>
+			<property name="caseSensitive" value="true"/>
+			<property name="lombok" value="Getter,Setter"/>
+		</plugin>
+		<plugin type="org.mybatis.generator.plugins.RenameExampleClassPlugin">
+			<property name="searchString" value="Example$"/>
+			<property name="replaceString" value="Criteria"/>
+		</plugin>
+		
+		<jdbcConnection driverClass="com.mysql.cj.jdbc.Driver" 
+			connectionURL="jdbc:mysql://172.30.16.49:3306/ups?characterEncoding=utf8"
+			userId="root"
+			password="phzc@123456">
+		</jdbcConnection>
+		
+		<javaTypeResolver type="org.mybatis.generator.internal.types.JavaTypeResolverDefaultImpl">
+			<property name="forceBigDecimals" value="true"/>
+		</javaTypeResolver>
+		
+		<javaModelGenerator targetPackage="com.talkortell.bbs.domain.mysql.ups" targetProject="../ups-domain/src/main/java">
+			<property name="trimStrings" value="true"/>
+		</javaModelGenerator>
+		
+		<sqlMapGenerator targetPackage="mappings.ups.slave" targetProject="src/main/resources">
+		</sqlMapGenerator>
+		
+		<javaClientGenerator targetPackage="com.talkortell.bbs.dal.dao.ups.mysql.slave" type="XMLMAPPER" targetProject="src/main/java">
+		</javaClientGenerator>
+		
+		<table tableName="user_interest_info" domainObjectName="UserInterestInfo" 
+			mapperName="UserInterestInfoMapper" enableInsert="false"
+			enableUpdateByPrimaryKey="false" enableDeleteByPrimaryKey="false" 
+			enableDeleteByExample="false" enableUpdateByExample="false">
+			
+			<generatedKey column="id" sqlStatement="Mysql" identity="true"/>		
+		</table>
+		
+		<table tableName="user_oper_info" domainObjectName="UserOperInfo" 
+			mapperName="UserOperInfoMapper" enableInsert="false"
+			enableUpdateByPrimaryKey="false" enableDeleteByPrimaryKey="false" 
+			enableDeleteByExample="false" enableUpdateByExample="false">
+			
+			<generatedKey column="id" sqlStatement="Mysql" identity="true"/>		
+		</table>
+	</context>
+</generatorConfiguration>
