@@ -15,9 +15,9 @@ import org.springframework.http.MediaType;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.alibaba.fastjson.support.config.FastJsonConfig;
 import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
-import com.talkortell.bbs.utils.SpringContextUtil;
 import com.github.pagehelper.autoconfigure.PageHelperAutoConfiguration;
 import com.google.common.collect.Lists;
+import com.talkortell.bbs.base.utils.SpringContextUtil;
 
 @SpringBootApplication(exclude=PageHelperAutoConfiguration.class)
 @ComponentScan({"com.talkortell.bbs"})

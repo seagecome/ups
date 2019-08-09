@@ -6,7 +6,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
-import com.talkortell.bbs.utils.SpringContextUtil;
+import com.talkortell.bbs.base.utils.SpringContextUtil;
 
 @Configuration
 @ComponentScan({"com.talkortell.bbs"})
