@@ -21,14 +21,9 @@ import com.talkortell.bbs.dal.DalTestApplication;
 @ContextConfiguration(classes = DalTestApplication.class)
 public class MySQLGenerator extends BaseGenerator {
 	
-	private static final String NEEDENCRYPT="private String loginPassword";
-	private static final String ENCRYPTPREFIX="@ColumnType(typeHandler=com.talkortell.bbs.base.common.db.EncryptTypeHandler.class)";
-	private static final String STAYPACKAGE="package com.talkortell.bbs.domain.mysql.ups;";
-	private static final String IMPORTCONTENT="import tk.mybatis.mapper.annotation.ColumnType;";
-	private static final String XMLREPLACESTR="property=\"loginPassword\"";
-	private static final String XMLREPLACESUFFIX=" typeHandler=\"com.talkortell.bbs.base.common.db.EncryptTypeHandler\"";
-	private static final String XMLELEMENTSTR="loginPassword,jdbcType=VARCHAR";
-	private static final String XMLELEMENTSUFFIX=",typeHandler=com.talkortell.bbs.base.common.db.EncryptTypeHandler";
+	private static final String encryptFields = "loginPassword";
+	private static final String selfTypeHandler = "com.talkortell.bbs.base.common.db.EncryptTypeHandler";
+	
 	
 	@Test
 	public void masterGen() {
@@ -37,6 +32,35 @@ public class MySQLGenerator extends BaseGenerator {
 	@Test
 	public void slaveGen() {
 		this.run("generatorMySQLConfigSlave.xml");
+	}
+	
+	private String javaLoopCheck(String formattedContent, String fileContent) {
+		String[] targetFields = encryptFields.split(",");
+		for(String encryptField : targetFields) {
+			BaseElement be = new BaseElement(encryptField, selfTypeHandler);
+			if(StringUtils.contains(formattedContent, be.getDomainEncryptContent())) {
+				fileContent = StringUtils.isBlank(fileContent) ? formattedContent : fileContent;
+				fileContent = fileContent.replace(be.getDomainEncryptContent(), be.getNewAnnotation() + "\n    " + be.getDomainEncryptContent());
+			}
+			if(StringUtils.contains(fileContent, be.getDomainEncryptContent()) && !StringUtils.contains(fileContent, be.getImportAnnotation())) {
+				System.out.println("===wolaile===");
+				fileContent = fileContent.replace(be.getDomainPackage(), be.getDomainPackage() + "\n\n" + be.getImportAnnotation());
+			}
+		}
+		return fileContent;
+	}
+	
+	private String xmlLoopCheck(String formattedContent, String fileContent) {
+		String[] targetFields = encryptFields.split(",");
+		for(String encryptField : targetFields) {
+			BaseElement be = new BaseElement(encryptField, selfTypeHandler);
+			if(StringUtils.contains(formattedContent, be.getXmlSourceContent())) {
+				fileContent = StringUtils.isBlank(fileContent) ? formattedContent : fileContent;
+				fileContent = fileContent.replace(be.getXmlSourceContent(), be.getXmlSourceContent() + be.getXmlAddContent());
+				fileContent = fileContent.replace(be.getXmlDynamicSql(), be.getXmlDynamicSql() + be.getXmlDynamicAddContent());
+			}
+		}
+		return fileContent;
 	}
 	
 	private void run(String configName) {
@@ -62,11 +86,7 @@ public class MySQLGenerator extends BaseGenerator {
 					fileContent = fileContent.replace("@GeneratedValue", "@Id\n    @GeneratedValue");
 				}
 				
-				if(StringUtils.contains(file.getFormattedContent(), NEEDENCRYPT)) {
-					fileContent = StringUtils.isBlank(fileContent) ? file.getFormattedContent() : fileContent;
-					fileContent = fileContent.replace(NEEDENCRYPT, ENCRYPTPREFIX + "\n    " + NEEDENCRYPT);
-					fileContent = fileContent.replace(STAYPACKAGE, STAYPACKAGE + "\n\n" + IMPORTCONTENT);
-				}
+				fileContent = javaLoopCheck(file.getFormattedContent(), fileContent);
 				
 				if(!StringUtils.isBlank(fileContent)) {
 					changeGenFileContent(callback, file, fileContent);
@@ -80,11 +100,7 @@ public class MySQLGenerator extends BaseGenerator {
 					fileContent = this.renameExample(file.getFormattedContent());
 				}
 				
-				if(StringUtils.contains(file.getFormattedContent(), XMLREPLACESTR)) {
-					fileContent = StringUtils.isBlank(fileContent) ? file.getFormattedContent() : fileContent;
-					fileContent = fileContent.replace(XMLREPLACESTR, XMLREPLACESTR + XMLREPLACESUFFIX);
-					fileContent = fileContent.replace(XMLELEMENTSTR, XMLELEMENTSTR + XMLELEMENTSUFFIX);
-				}
+				fileContent = xmlLoopCheck(file.getFormattedContent(), fileContent);
 				
 				if(!StringUtils.isBlank(fileContent)) {
 					changeGenFileContent(callback, file, fileContent);
