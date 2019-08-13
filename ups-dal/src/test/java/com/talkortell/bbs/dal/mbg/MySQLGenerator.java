@@ -16,14 +16,12 @@ import org.springframework.test.context.junit4.SpringRunner;
 import com.google.common.collect.Lists;
 import com.talkortell.bbs.dal.DalTestApplication;
 
-import tk.mybatis.mapper.annotation.ColumnType;
-
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @ContextConfiguration(classes = DalTestApplication.class)
 public class MySQLGenerator extends BaseGenerator {
 	
-	private static final String NEEDENCRYPT="private String loginPassword;";
+	private static final String NEEDENCRYPT="private String loginPassword";
 	private static final String ENCRYPTPREFIX="@ColumnType(typeHandler=com.talkortell.bbs.base.common.db.EncryptTypeHandler.class)";
 	private static final String STAYPACKAGE="package com.talkortell.bbs.domain.mysql.ups;";
 	private static final String IMPORTCONTENT="import tk.mybatis.mapper.annotation.ColumnType;";
