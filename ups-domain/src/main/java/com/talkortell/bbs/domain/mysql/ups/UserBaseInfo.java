@@ -1,5 +1,7 @@
 package com.talkortell.bbs.domain.mysql.ups;
 
+import tk.mybatis.mapper.annotation.ColumnType;
+
 import java.util.Date;
 import javax.persistence.*;
 import lombok.Getter;
@@ -26,6 +28,7 @@ public class UserBaseInfo {
      * 登录密码
      */
     @Column(name = "login_password")
+    @ColumnType(typeHandler=com.talkortell.bbs.base.common.db.EncryptTypeHandler.class)
     private String loginPassword;
 
     /**
@@ -47,10 +50,10 @@ public class UserBaseInfo {
     private Date latestLoginTime;
 
     /**
-     * 删除标志
+     * 删除标志：N-未删除，Y-已删除
      */
     @Column(name = "delete_flag")
-    private Boolean deleteFlag;
+    private String deleteFlag;
 
     /**
      * 创建时间

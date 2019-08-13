@@ -42,6 +42,9 @@
 		<javaClientGenerator targetPackage="com.talkortell.bbs.dal.dao.ups.mysql.master" type="XMLMAPPER" targetProject="src/main/java">
 		</javaClientGenerator>
 		
+		<table tableName="user_base_info" domainObjectName="UserBaseInfo">
+			<generatedKey column="id" sqlStatement="Mysql" identity="true"/>		
+		</table>
 		<table tableName="user_interest_info" domainObjectName="UserInterestInfo">
 			<generatedKey column="id" sqlStatement="Mysql" identity="true"/>		
 		</table>

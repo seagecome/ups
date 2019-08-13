@@ -41,8 +41,16 @@
 		<javaClientGenerator targetPackage="com.talkortell.bbs.dal.dao.ups.mysql.slave" type="XMLMAPPER" targetProject="src/main/java">
 		</javaClientGenerator>
 		
+		<table tableName="user_base_info" domainObjectName="UserBaseInfo" 
+			mapperName="UserBaseInfoSlaveMapper" enableInsert="false"
+			enableUpdateByPrimaryKey="false" enableDeleteByPrimaryKey="false" 
+			enableDeleteByExample="false" enableUpdateByExample="false">
+			
+			<generatedKey column="id" sqlStatement="Mysql" identity="true"/>		
+		</table>
+		
 		<table tableName="user_interest_info" domainObjectName="UserInterestInfo" 
-			mapperName="UserInterestInfoMapper" enableInsert="false"
+			mapperName="UserInterestInfoSlaveMapper" enableInsert="false"
 			enableUpdateByPrimaryKey="false" enableDeleteByPrimaryKey="false" 
 			enableDeleteByExample="false" enableUpdateByExample="false">
 			
@@ -50,7 +58,7 @@
 		</table>
 		
 		<table tableName="user_oper_info" domainObjectName="UserOperInfo" 
-			mapperName="UserOperInfoMapper" enableInsert="false"
+			mapperName="UserOperInfoSlaveMapper" enableInsert="false"
 			enableUpdateByPrimaryKey="false" enableDeleteByPrimaryKey="false" 
 			enableDeleteByExample="false" enableUpdateByExample="false">
 			

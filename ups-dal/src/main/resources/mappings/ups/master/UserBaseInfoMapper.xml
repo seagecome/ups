@@ -7,11 +7,11 @@
     -->
     <result column="id" jdbcType="BIGINT" property="id" />
     <result column="login_account" jdbcType="VARCHAR" property="loginAccount" />
-    <result column="login_password" jdbcType="VARCHAR" property="loginPassword" />
+    <result column="login_password" jdbcType="VARCHAR" property="loginPassword" typeHandler="com.talkortell.bbs.base.common.db.EncryptTypeHandler" />
     <result column="user_state" jdbcType="CHAR" property="userState" />
     <result column="login_error_count" jdbcType="INTEGER" property="loginErrorCount" />
     <result column="latest_login_time" jdbcType="TIMESTAMP" property="latestLoginTime" />
-    <result column="delete_flag" jdbcType="BIT" property="deleteFlag" />
+    <result column="delete_flag" jdbcType="CHAR" property="deleteFlag" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
   </resultMap>
@@ -134,7 +134,7 @@
         login_account = #{record.loginAccount,jdbcType=VARCHAR},
       </if>
       <if test="record.loginPassword != null">
-        login_password = #{record.loginPassword,jdbcType=VARCHAR},
+        login_password = #{record.loginPassword,jdbcType=VARCHAR,typeHandler=com.talkortell.bbs.base.common.db.EncryptTypeHandler},
       </if>
       <if test="record.userState != null">
         user_state = #{record.userState,jdbcType=CHAR},
@@ -146,7 +146,7 @@
         latest_login_time = #{record.latestLoginTime,jdbcType=TIMESTAMP},
       </if>
       <if test="record.deleteFlag != null">
-        delete_flag = #{record.deleteFlag,jdbcType=BIT},
+        delete_flag = #{record.deleteFlag,jdbcType=CHAR},
       </if>
       <if test="record.createTime != null">
         create_time = #{record.createTime,jdbcType=TIMESTAMP},
@@ -166,11 +166,11 @@
     update user_base_info
     set id = #{record.id,jdbcType=BIGINT},
       login_account = #{record.loginAccount,jdbcType=VARCHAR},
-      login_password = #{record.loginPassword,jdbcType=VARCHAR},
+      login_password = #{record.loginPassword,jdbcType=VARCHAR,typeHandler=com.talkortell.bbs.base.common.db.EncryptTypeHandler},
       user_state = #{record.userState,jdbcType=CHAR},
       login_error_count = #{record.loginErrorCount,jdbcType=INTEGER},
       latest_login_time = #{record.latestLoginTime,jdbcType=TIMESTAMP},
-      delete_flag = #{record.deleteFlag,jdbcType=BIT},
+      delete_flag = #{record.deleteFlag,jdbcType=CHAR},
       create_time = #{record.createTime,jdbcType=TIMESTAMP},
       update_time = #{record.updateTime,jdbcType=TIMESTAMP}
     <if test="_parameter != null">

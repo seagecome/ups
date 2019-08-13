@@ -8,6 +8,7 @@
     <result column="id" jdbcType="BIGINT" property="id" />
     <result column="target_key" jdbcType="BIGINT" property="targetKey" />
     <result column="interest_type" jdbcType="CHAR" property="interestType" />
+    <result column="delete_flag" jdbcType="CHAR" property="deleteFlag" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
   </resultMap>
@@ -79,7 +80,7 @@
     <!--
       WARNING - @mbg.generated
     -->
-    id, target_key, interest_type, create_time, update_time
+    id, target_key, interest_type, delete_flag, create_time, update_time
   </sql>
   <select id="selectByCriteria" parameterType="com.talkortell.bbs.domain.mysql.ups.UserInterestInfoCriteria" resultMap="BaseResultMap">
     <!--
@@ -131,6 +132,9 @@
       <if test="record.interestType != null">
         interest_type = #{record.interestType,jdbcType=CHAR},
       </if>
+      <if test="record.deleteFlag != null">
+        delete_flag = #{record.deleteFlag,jdbcType=CHAR},
+      </if>
       <if test="record.createTime != null">
         create_time = #{record.createTime,jdbcType=TIMESTAMP},
       </if>
@@ -150,6 +154,7 @@
     set id = #{record.id,jdbcType=BIGINT},
       target_key = #{record.targetKey,jdbcType=BIGINT},
       interest_type = #{record.interestType,jdbcType=CHAR},
+      delete_flag = #{record.deleteFlag,jdbcType=CHAR},
       create_time = #{record.createTime,jdbcType=TIMESTAMP},
       update_time = #{record.updateTime,jdbcType=TIMESTAMP}
     <if test="_parameter != null">

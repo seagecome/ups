@@ -29,6 +29,12 @@ public class UserInterestInfo {
     private String interestType;
 
     /**
+     * 删除标志：N-未删除，Y-已删除
+     */
+    @Column(name = "delete_flag")
+    private String deleteFlag;
+
+    /**
      * 创建时间
      */
     @Column(name = "create_time")
@@ -49,6 +55,7 @@ public class UserInterestInfo {
         sb.append(", id=").append(id);
         sb.append(", targetKey=").append(targetKey);
         sb.append(", interestType=").append(interestType);
+        sb.append(", deleteFlag=").append(deleteFlag);
         sb.append(", createTime=").append(createTime);
         sb.append(", updateTime=").append(updateTime);
         sb.append("]");

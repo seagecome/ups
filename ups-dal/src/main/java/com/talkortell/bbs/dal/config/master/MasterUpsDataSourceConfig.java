@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import com.alibaba.druid.pool.DruidDataSource;
 
@@ -21,9 +22,13 @@ import tk.mybatis.spring.annotation.MapperScan;
 	properties= {"mappers=tk.mybatis.mapper.common.Mapper", "notEmpty=true", "identity=MYSQL"},
 	basePackages=MasterUpsDataSourceConfig.BASEPACKAGES,
 	sqlSessionFactoryRef="masterSqlSessionFactory")
+@EnableTransactionManagement
 public class MasterUpsDataSourceConfig {
-	protected static final String BASEPACKAGES = "com.talkortell.bbs.dal.dao.master";
+	protected static final String BASEPACKAGES = "com.talkortell.bbs.dal.dao.ups.mysql.master";
 	protected static final String MAPPER_LOCATION = "classpath:mappings/ups/master/*.xml";
+	protected static final String DATA_SOURCE = "masterDataSource";
+	public static final String TRANS_MANAGER = "masterTransactionManager";
+	protected static final String SESSION_FACTORY = "masterSqlSessionFactory";
 
 	@Value("${spring.datasource.ups.master.url}")
 	private String url;
@@ -34,7 +39,7 @@ public class MasterUpsDataSourceConfig {
 	@Value("${spring.datasource.ups.master.driver-class-name}")
 	private String driverClass;
 	
-	@Bean(name="masterDataSource")
+	@Bean(name=MasterUpsDataSourceConfig.DATA_SOURCE)
 	public DataSource masterDataSource(){
 		DruidDataSource dataSource = new DruidDataSource();
 		dataSource.setUrl(url);
@@ -44,13 +49,13 @@ public class MasterUpsDataSourceConfig {
 		return dataSource;
 	}
 	
-	@Bean(name="masterTransactionManager")
+	@Bean(name=MasterUpsDataSourceConfig.TRANS_MANAGER)
 	@Primary
 	public DataSourceTransactionManager masterTransactionManager(){
 		return new DataSourceTransactionManager(masterDataSource());
 	}
 	
-	@Bean(name="masterSqlSessionFactory")
+	@Bean(name=MasterUpsDataSourceConfig.SESSION_FACTORY)
 	@Primary
 	public SqlSessionFactory masterSqlSessionFactory(@Qualifier("masterDataSource")DataSource masterDataSource) throws Exception{
 		SqlSessionFactoryBean sessionFactory = new SqlSessionFactoryBean();

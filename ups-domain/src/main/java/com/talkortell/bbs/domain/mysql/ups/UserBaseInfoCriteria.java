@@ -505,52 +505,62 @@ public class UserBaseInfoCriteria {
             return (Criteria) this;
         }
 
-        public Criteria andDeleteFlagEqualTo(Boolean value) {
+        public Criteria andDeleteFlagEqualTo(String value) {
             addCriterion("delete_flag =", value, "deleteFlag");
             return (Criteria) this;
         }
 
-        public Criteria andDeleteFlagNotEqualTo(Boolean value) {
+        public Criteria andDeleteFlagNotEqualTo(String value) {
             addCriterion("delete_flag <>", value, "deleteFlag");
             return (Criteria) this;
         }
 
-        public Criteria andDeleteFlagGreaterThan(Boolean value) {
+        public Criteria andDeleteFlagGreaterThan(String value) {
             addCriterion("delete_flag >", value, "deleteFlag");
             return (Criteria) this;
         }
 
-        public Criteria andDeleteFlagGreaterThanOrEqualTo(Boolean value) {
+        public Criteria andDeleteFlagGreaterThanOrEqualTo(String value) {
             addCriterion("delete_flag >=", value, "deleteFlag");
             return (Criteria) this;
         }
 
-        public Criteria andDeleteFlagLessThan(Boolean value) {
+        public Criteria andDeleteFlagLessThan(String value) {
             addCriterion("delete_flag <", value, "deleteFlag");
             return (Criteria) this;
         }
 
-        public Criteria andDeleteFlagLessThanOrEqualTo(Boolean value) {
+        public Criteria andDeleteFlagLessThanOrEqualTo(String value) {
             addCriterion("delete_flag <=", value, "deleteFlag");
             return (Criteria) this;
         }
 
-        public Criteria andDeleteFlagIn(List<Boolean> values) {
+        public Criteria andDeleteFlagLike(String value) {
+            addCriterion("delete_flag like", value, "deleteFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeleteFlagNotLike(String value) {
+            addCriterion("delete_flag not like", value, "deleteFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeleteFlagIn(List<String> values) {
             addCriterion("delete_flag in", values, "deleteFlag");
             return (Criteria) this;
         }
 
-        public Criteria andDeleteFlagNotIn(List<Boolean> values) {
+        public Criteria andDeleteFlagNotIn(List<String> values) {
             addCriterion("delete_flag not in", values, "deleteFlag");
             return (Criteria) this;
         }
 
-        public Criteria andDeleteFlagBetween(Boolean value1, Boolean value2) {
+        public Criteria andDeleteFlagBetween(String value1, String value2) {
             addCriterion("delete_flag between", value1, value2, "deleteFlag");
             return (Criteria) this;
         }
 
-        public Criteria andDeleteFlagNotBetween(Boolean value1, Boolean value2) {
+        public Criteria andDeleteFlagNotBetween(String value1, String value2) {
             addCriterion("delete_flag not between", value1, value2, "deleteFlag");
             return (Criteria) this;
         }

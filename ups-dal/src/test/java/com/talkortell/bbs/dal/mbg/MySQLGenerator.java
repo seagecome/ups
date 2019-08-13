@@ -16,10 +16,22 @@ import org.springframework.test.context.junit4.SpringRunner;
 import com.google.common.collect.Lists;
 import com.talkortell.bbs.dal.DalTestApplication;
 
+import tk.mybatis.mapper.annotation.ColumnType;
+
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @ContextConfiguration(classes = DalTestApplication.class)
 public class MySQLGenerator extends BaseGenerator {
+	
+	private static final String NEEDENCRYPT="private String loginPassword;";
+	private static final String ENCRYPTPREFIX="@ColumnType(typeHandler=com.talkortell.bbs.base.common.db.EncryptTypeHandler.class)";
+	private static final String STAYPACKAGE="package com.talkortell.bbs.domain.mysql.ups;";
+	private static final String IMPORTCONTENT="import tk.mybatis.mapper.annotation.ColumnType;";
+	private static final String XMLREPLACESTR="property=\"loginPassword\"";
+	private static final String XMLREPLACESUFFIX=" typeHandler=\"com.talkortell.bbs.base.common.db.EncryptTypeHandler\"";
+	private static final String XMLELEMENTSTR="loginPassword,jdbcType=VARCHAR";
+	private static final String XMLELEMENTSUFFIX=",typeHandler=com.talkortell.bbs.base.common.db.EncryptTypeHandler";
+	
 	@Test
 	public void masterGen() {
 		this.run("generatorMySQLConfig.xml");
@@ -52,14 +64,31 @@ public class MySQLGenerator extends BaseGenerator {
 					fileContent = fileContent.replace("@GeneratedValue", "@Id\n    @GeneratedValue");
 				}
 				
+				if(StringUtils.contains(file.getFormattedContent(), NEEDENCRYPT)) {
+					fileContent = StringUtils.isBlank(fileContent) ? file.getFormattedContent() : fileContent;
+					fileContent = fileContent.replace(NEEDENCRYPT, ENCRYPTPREFIX + "\n    " + NEEDENCRYPT);
+					fileContent = fileContent.replace(STAYPACKAGE, STAYPACKAGE + "\n\n" + IMPORTCONTENT);
+				}
+				
 				if(!StringUtils.isBlank(fileContent)) {
 					changeGenFileContent(callback, file, fileContent);
 				}
 			});
 			
 			myBatisGenerator.getGeneratedXmlFiles().forEach(file ->{
+				String fileContent = StringUtils.EMPTY;
+				
 				if(StringUtils.contains(file.getFormattedContent(), "Example")) {
-					String fileContent = this.renameExample(file.getFormattedContent());
+					fileContent = this.renameExample(file.getFormattedContent());
+				}
+				
+				if(StringUtils.contains(file.getFormattedContent(), XMLREPLACESTR)) {
+					fileContent = StringUtils.isBlank(fileContent) ? file.getFormattedContent() : fileContent;
+					fileContent = fileContent.replace(XMLREPLACESTR, XMLREPLACESTR + XMLREPLACESUFFIX);
+					fileContent = fileContent.replace(XMLELEMENTSTR, XMLELEMENTSTR + XMLELEMENTSUFFIX);
+				}
+				
+				if(!StringUtils.isBlank(fileContent)) {
 					changeGenFileContent(callback, file, fileContent);
 				}
 			});
