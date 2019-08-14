@@ -21,7 +21,7 @@ import tk.mybatis.spring.annotation.MapperScan;
 @MapperScan(value="tk.mybatis.mapper.annotation", 
 	properties= {"mappers=tk.mybatis.mapper.common.Mapper", "notEmpty=true", "identity=MYSQL"},
 	basePackages=SlaveUpsDataSourceConfig.BASEPACKAGES,
-	sqlSessionFactoryRef="masterSqlSessionFactory")
+	sqlSessionFactoryRef="slaveSqlSessionFactory")
 @EnableTransactionManagement
 public class SlaveUpsDataSourceConfig {
 	protected static final String BASEPACKAGES = "com.talkortell.bbs.dal.dao.ups.mysql.slave";

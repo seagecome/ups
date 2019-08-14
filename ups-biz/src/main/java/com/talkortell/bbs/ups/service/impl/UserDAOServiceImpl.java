@@ -1,41 +1,45 @@
 package com.talkortell.bbs.ups.service.impl;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.talkortell.bbs.dal.dao.ups.mysql.master.UserBaseInfoMapper;
-import com.talkortell.bbs.dal.dao.ups.mysql.master.UserOperInfoMapper;
-import com.talkortell.bbs.dal.dao.ups.mysql.slave.UserBaseInfoSlaveMapper;
 import com.talkortell.bbs.base.common.exception.AppLogicException;
 import com.talkortell.bbs.dal.config.master.MasterUpsDataSourceConfig;
+import com.talkortell.bbs.dal.dao.ups.mysql.master.UserBaseInfoMapper;
+import com.talkortell.bbs.dal.dao.ups.mysql.master.UserOperInfoMapper;
+import com.talkortell.bbs.dal.dao.ups.mysql.slave.UserFullInfoMySlaveMapper;
 import com.talkortell.bbs.domain.mysql.ups.UserBaseInfo;
-import com.talkortell.bbs.domain.mysql.ups.UserBaseInfoCriteria;
 import com.talkortell.bbs.domain.mysql.ups.UserOperInfo;
+import com.talkortell.bbs.domain.mysql.ups.po.UserFullInfo;
+import com.talkortell.bbs.ups.api.dto.req.QueryUserFullInfoRequest;
 import com.talkortell.bbs.ups.api.dto.req.UserRegisterRequest;
 import com.talkortell.bbs.ups.service.IUserDAOService;
+import com.talkortell.bbs.utils.SnowflakeIdWorker;
 
-import lombok.extern.slf4j.Slf4j;
-
-@Slf4j
 @Service("userDAOService")
 public class UserDAOServiceImpl implements IUserDAOService {
 
 	@Autowired
 	private UserBaseInfoMapper userBaseInfoMapper;
 	@Autowired
-	private UserBaseInfoSlaveMapper userBaseInfoSlaveMapper;
-	@Autowired
 	private UserOperInfoMapper userOperInfoMapper;
+	@Autowired
+	private UserFullInfoMySlaveMapper userFullInfoMySlaveMapper;
 	
 	@Transactional(value=MasterUpsDataSourceConfig.TRANS_MANAGER, rollbackFor=Exception.class, propagation=Propagation.REQUIRED)
 	@Override
 	public void addUser(UserRegisterRequest userRegisterRequest) throws AppLogicException {
 		Date currentTime = new Date();
 		UserBaseInfo ubi = new UserBaseInfo();
+		SnowflakeIdWorker idWorker = new SnowflakeIdWorker(0, 0);
+		ubi.setUserId(String.valueOf(idWorker.nextId()));
 		ubi.setLoginAccount(userRegisterRequest.getUserEmail());
 		ubi.setLoginPassword(userRegisterRequest.getLoginPassword());
 		ubi.setCreateTime(currentTime);
@@ -58,13 +62,20 @@ public class UserDAOServiceImpl implements IUserDAOService {
 	}
 
 	@Override
-	public void queryUserBase() throws AppLogicException {
-		UserBaseInfo ubi = userBaseInfoSlaveMapper.selectByPrimaryKey(2l);
-		log.info("===ubi==={}", ubi);
-		ubi.setLoginPassword("wolaile");
-		UserBaseInfoCriteria criteria = new UserBaseInfoCriteria();
-		criteria.createCriteria().andIdEqualTo(2l);
-		userBaseInfoMapper.updateByCriteriaSelective(ubi, criteria);
+	public UserFullInfo queryUserFullInfo(QueryUserFullInfoRequest queryUserFullInfoRequest) throws AppLogicException {
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		paramMap.put("loginAccount", queryUserFullInfoRequest.getLoginAccount());
+		paramMap.put("userEmail", queryUserFullInfoRequest.getUserEmail());
+		paramMap.put("userMobile", queryUserFullInfoRequest.getUserMobile());
+		return userFullInfoMySlaveMapper.queryUserFullInfo(paramMap);
+	}
+
+	@Override
+	public UserFullInfo queryUserFullInfoByUserId(String userId) throws AppLogicException {
+		if(StringUtils.isBlank(userId)) {
+			throw new AppLogicException("参数不能为空");
+		}
+		return userFullInfoMySlaveMapper.queryUserFullInfoByUserId(userId);
 	}
 
 }

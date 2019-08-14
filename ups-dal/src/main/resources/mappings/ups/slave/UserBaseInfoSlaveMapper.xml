@@ -6,6 +6,7 @@
       WARNING - @mbg.generated
     -->
     <result column="id" jdbcType="BIGINT" property="id" />
+    <result column="user_id" jdbcType="VARCHAR" property="userId" />
     <result column="login_account" jdbcType="VARCHAR" property="loginAccount" />
     <result column="login_password" jdbcType="VARCHAR" property="loginPassword" typeHandler="com.talkortell.bbs.base.common.db.EncryptTypeHandler" />
     <result column="user_state" jdbcType="CHAR" property="userState" />
@@ -51,7 +52,7 @@
     <!--
       WARNING - @mbg.generated
     -->
-    id, login_account, login_password, user_state, login_error_count, latest_login_time, 
+    id, user_id, login_account, login_password, user_state, login_error_count, latest_login_time, 
     delete_flag, create_time, update_time
   </sql>
   <select id="selectByCriteria" parameterType="com.talkortell.bbs.domain.mysql.ups.UserBaseInfoCriteria" resultMap="BaseResultMap">

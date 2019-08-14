@@ -18,6 +18,9 @@ public class UserBaseInfo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "user_id")
+    private String userId;
+
     /**
      * 登录账号
      */
@@ -74,6 +77,7 @@ public class UserBaseInfo {
         sb.append(" [");
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
+        sb.append(", userId=").append(userId);
         sb.append(", loginAccount=").append(loginAccount);
         sb.append(", loginPassword=").append(loginPassword);
         sb.append(", userState=").append(userState);

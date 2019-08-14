@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.talkortell.bbs.dal.dao.ups.mysql.slave.UserFullInfoMySlaveMapper">
+  <resultMap id="BaseResultMap" type="com.talkortell.bbs.domain.mysql.ups.po.UserFullInfo">
+    <result column="user_key" jdbcType="BIGINT" property="userKey" />
+    <result column="user_id" jdbcType="VARCHAR" property="userId" />
+    <result column="login_account" jdbcType="VARCHAR" property="loginAccount" />
+    <result column="login_password" jdbcType="VARCHAR" property="loginPassword" typeHandler="com.talkortell.bbs.base.common.db.EncryptTypeHandler" />
+    <result column="user_state" jdbcType="CHAR" property="userState" />
+    <result column="login_error_count" jdbcType="INTEGER" property="loginErrorCount" />
+    <result column="latest_login_time" jdbcType="TIMESTAMP" property="latestLoginTime" />
+    <result column="delete_flag" jdbcType="CHAR" property="deleteFlag" />
+    <result column="oper_key" jdbcType="BIGINT" property="operKey" />
+    <result column="user_email" jdbcType="VARCHAR" property="userEmail" />
+    <result column="user_mobile" jdbcType="CHAR" property="userMobile" />
+    <result column="user_birth" jdbcType="DATE" property="userBirth" />
+    <result column="user_sex" jdbcType="CHAR" property="userSex" />
+    <result column="user_icon" jdbcType="VARCHAR" property="userIcon" />
+    <result column="nick_name" jdbcType="VARCHAR" property="nickName" />
+    <result column="sign_content" jdbcType="VARCHAR" property="signContent" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <select id="queryUserFullInfo" parameterType="map" resultMap="BaseResultMap">
+    SELECT ubi.user_id, ubi.login_account, ubi.login_password, ubi.user_state, ubi.login_error_count, ubi.latest_login_time, ubi.delete_flag, 
+    	upi.id as oper_key, upi.user_key, upi.user_email, upi.user_mobile, upi.user_birth, upi.user_sex, upi.user_icon, upi.nick_name, 
+    	upi.sign_content, upi.create_time, upi.update_time 
+    FROM user_base_info ubi
+    LEFT JOIN user_oper_info upi on ubi.id=upi.user_key
+    where 1=1 
+    <if test="loginAccount != null and loginAccount != ''">
+    	and ubi.login_account=#{loginAccount}
+    </if>
+    <if test="userMobile != null and userMobile != ''">
+    	and upi.user_mobile=#{userMobile}
+    </if>
+    <if test="userEmail != null and userEmail != ''">
+    	and upi.user_email=#{userEmail}
+    </if>
+  </select>
+  
+  <select id="queryUserFullInfoByUserId" parameterType="map" resultMap="BaseResultMap">
+    SELECT ubi.user_id, ubi.login_account, ubi.login_password, ubi.user_state, ubi.login_error_count, ubi.latest_login_time, ubi.delete_flag, 
+    	upi.id as oper_key, upi.user_key, upi.user_email, upi.user_mobile, upi.user_birth, upi.user_sex, upi.user_icon, upi.nick_name, 
+    	upi.sign_content, upi.create_time, upi.update_time 
+    FROM user_base_info ubi
+    LEFT JOIN user_oper_info upi on ubi.id=upi.user_key
+    where ubi.user_id=#{userId}
+  </select>
+</mapper>
