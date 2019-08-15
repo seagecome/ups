@@ -47,4 +47,16 @@
     LEFT JOIN user_oper_info upi on ubi.id=upi.user_key
     where ubi.user_id=#{userId}
   </select>
+  
+  <select id="queryUserFullInfoList" parameterType="map" resultMap="BaseResultMap">
+    SELECT ubi.user_id, ubi.login_account, ubi.login_password, ubi.user_state, ubi.login_error_count, ubi.latest_login_time, ubi.delete_flag, 
+    	upi.id as oper_key, upi.user_key, upi.user_email, upi.user_mobile, upi.user_birth, upi.user_sex, upi.user_icon, upi.nick_name, 
+    	upi.sign_content, upi.create_time, upi.update_time 
+    FROM user_base_info ubi
+    LEFT JOIN user_oper_info upi on ubi.id=upi.user_key
+    where ubi.user_id in 
+    <foreach collection="list" open="(" close=")" item="item" separator="," index="index">
+    	#{item}
+    </foreach>
+  </select>
 </mapper>

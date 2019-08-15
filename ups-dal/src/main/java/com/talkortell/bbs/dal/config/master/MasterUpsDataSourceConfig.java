@@ -1,19 +1,22 @@
 package com.talkortell.bbs.dal.config.master;
 
+import java.util.Properties;
+
 import javax.sql.DataSource;
 
+import org.apache.ibatis.plugin.Interceptor;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import com.alibaba.druid.pool.DruidDataSource;
+import com.github.pagehelper.PageInterceptor;
 
 import tk.mybatis.spring.annotation.MapperScan;
 
@@ -50,18 +53,24 @@ public class MasterUpsDataSourceConfig {
 	}
 	
 	@Bean(name=MasterUpsDataSourceConfig.TRANS_MANAGER)
-	@Primary
 	public DataSourceTransactionManager masterTransactionManager(){
 		return new DataSourceTransactionManager(masterDataSource());
 	}
 	
 	@Bean(name=MasterUpsDataSourceConfig.SESSION_FACTORY)
-	@Primary
 	public SqlSessionFactory masterSqlSessionFactory(@Qualifier("masterDataSource")DataSource masterDataSource) throws Exception{
 		SqlSessionFactoryBean sessionFactory = new SqlSessionFactoryBean();
 		sessionFactory.setDataSource(masterDataSource);
         sessionFactory.setMapperLocations(new PathMatchingResourcePatternResolver()
         	.getResources(MasterUpsDataSourceConfig.MAPPER_LOCATION));
+        PageInterceptor pageInterceptor = new PageInterceptor();
+        Properties properties = new Properties();
+        properties.setProperty("helperDialect", "mysql");
+        properties.setProperty("reasonable", "true");
+        properties.setProperty("supportMethodsArguments", "true");
+        properties.setProperty("params", "count=countSql");
+        pageInterceptor.setProperties(properties);
+        sessionFactory.setPlugins(new Interceptor[] {pageInterceptor});
         return sessionFactory.getObject();
 	}
 }

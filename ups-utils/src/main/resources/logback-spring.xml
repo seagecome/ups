@@ -62,6 +62,7 @@
 			<!-- <appender-ref ref="INFO_FILE" /> <appender-ref ref="ERROR_FILE" /> -->
 		</logger>
 	</springProfile>
+		<logger name="com.talkortell.bbs.dal.dao.ups" level="DEBUG" />
 
 	<springProfile name="test,prod">
 		<logger name="com" level="INFO" additivity="false">
