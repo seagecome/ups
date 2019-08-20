@@ -24,7 +24,7 @@ import com.talkortell.bbs.base.utils.SpringContextUtil;
 @Import(SpringContextUtil.class)
 @EnableEurekaClient
 @EnableFeignClients(basePackages= {"com.talkortell.bbs.reference.feign"})
-public class WebApplication {
+public class UpsWebApplication {
 	
 	@Bean
 	public HttpMessageConverters fastJsonHttpMessageConverters() {
@@ -46,6 +46,6 @@ public class WebApplication {
 	}
 	
 	public static void main(String[] args) {
-		SpringApplication.run(WebApplication.class, args);
+		SpringApplication.run(UpsWebApplication.class, args);
 	}
 }
