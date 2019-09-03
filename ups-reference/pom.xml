@@ -12,6 +12,11 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
   <dependencies>
+  	<dependency>
+		<groupId>com.talkortell.bbs</groupId>
+		<artifactId>ups-utils</artifactId>
+		<version>${ups.version}</version>
+	</dependency>
 	<dependency>
 		<groupId>junit</groupId>
 		<artifactId>junit</artifactId>
@@ -65,5 +70,14 @@
 		<groupId>org.springframework.cloud</groupId>
 		<artifactId>spring-cloud-starter-openfeign</artifactId>
 	</dependency>
+	<dependency>
+      <groupId>org.elasticsearch</groupId>
+      <artifactId>elasticsearch</artifactId>
+      <version>7.3.0</version>
+    </dependency>
+    <dependency>
+      <groupId>io.searchbox</groupId>
+      <artifactId>jest</artifactId>
+    </dependency>
   </dependencies>
 </project>
